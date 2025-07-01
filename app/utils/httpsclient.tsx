@@ -20,3 +20,19 @@ export async function getinsideData(url:string) {
     return data;
     
 }
+
+export async function  getIssues(url:string) {
+    const repos_url= await axios.get(`${url}`);
+
+    const data=repos_url.data;
+    return 
+    
+}
+
+export function Popularity(followers:number){
+  if(followers>=0  && followers<=50) return   "very low";
+  else if (followers>50 && followers<=100 ) return "low";
+   return "moderate";
+
+
+}
