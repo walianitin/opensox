@@ -6,7 +6,7 @@ const Base_Url="https://api.github.com";
 // Use process.env.GITHUB_API_TOKEN directly in your code
 
 
-export async function  getOrganisation():Promise<Organisations[]>{
+export async function  getOrganisation(per_page:string):Promise<Organisations[]>{
     const response =await axios.get(`${Base_Url}/organizations`,
         {
             headers: {
