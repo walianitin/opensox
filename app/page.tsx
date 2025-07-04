@@ -36,7 +36,7 @@ export default function Home() {
       </thead>
 
       <tbody>
-{Organisations.filtermap((orgs, index) => (
+{Organisations.map((orgs, index) => (
   <OrgsTable
     key={index}
     login={orgs.login}
