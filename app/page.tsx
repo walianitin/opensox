@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, JSX } from "react";
 import { getOrgData, getOrganisation } from "./utils/httpsclient";
 import { Organisations, Org, repos_url } from "./utils/types";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { BadgeCheck } from "lucide-react";
-import { useRouter } from "next/navigation";
+
 import axios from "axios";
-import { loadComponents } from "next/dist/server/load-components";
+
 
 
 const columns = [
@@ -43,31 +43,88 @@ export default function Home() {
     };
 
     fetchData();
-  }, []);
-
-  if(loading) return <Loading />; 
-  if(err) return <ErrorDisplay message={err} />;
-
-
+     }, []);
+  
+  
+  
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 10; // Number of items per page
+  const totalPages = Math.ceil(Organisations.length / itemsPerPage);
+  const startindex: number = (currentPage - 1) * itemsPerPage;
+  const endIndex=startindex + itemsPerPage;
+  const currentItems = Organisations.slice(startindex, endIndex);
+  console.log("currentItems", currentItems);
+  
+    if(loading) return <Loading />; 
+    if(err) return <ErrorDisplay message={err} />;
 
   return (
-    <div className=" w-full h-screen overflow-auto">
+    <div className=" w-full h-screen overflow-hidden flex flex-row gap-3 p-2 scrollbar-hidden ">
+      <div className="w-1/3 bg-amber-50">
+      
+      </div>
+      <div className="w-1/3 bg-blue-50">
+
+      </div>
+      <div className=" cursor-w-resize bg-amber-300">
+
     <table className=" w-full h-screen border-collapse">
      <TableHeader columns={columns} />
       <tbody>
-{Organisations.map((orgs, index) => (
+{currentItems.map((orgs, index) => (
   <OrgsRow
-    key={index.toString()}
-    orgs={orgs}
-    columns={columns}
+  key={index.toString()}
+  orgs={orgs}
+  columns={columns}
   />
 ))}
      </tbody>
+   <Tablefooter
+      currentpage={currentPage}
+      setCurrentPage={setCurrentPage  }
+      totalPages={totalPages}>
+   </Tablefooter>
     </table>
         </div>
+      </div>
   );
 }
 
+function Tablefooter({
+  currentpage,
+  setCurrentPage,
+  totalPages,
+}: {
+  currentpage: number;
+  setCurrentPage: (value: number | ((prev: number) => number)) => void;
+  totalPages: number;
+}) {
+  return (
+    <tfoot>
+      <tr className="bg-neutral-900 text-white">
+        <td colSpan={7} className="text-center py-3">
+          <div className="flex justify-center items-center gap-4">
+            {/* Pagination controls can be added here */}
+            <button className="px-4 py-2 bg-blue-900/10 text-white rounded hover:bg-blue-600 transition-colors" onClick={()=>{
+              setCurrentPage((prev: number) => Math.max(prev - 1, 1));
+            }}>
+              Previous
+            </button>
+            <span>Page {currentpage} of 10</span>
+            <button
+              className="px-4 py-2 bg-blue-900/10 text-white rounded hover:bg-blue-600 transition-colors"
+              onClick={() => {
+                setCurrentPage((prev: number) => Math.min(prev + 1, totalPages));
+              }}
+            >
+              Next
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tfoot>
+  );
+}
 function Loading(){
   return (
     <div className=" flex justify-centre items-center h-screen">
@@ -142,7 +199,7 @@ try{
     }
   },[orgs.url]);
 
-  if(rowloading) return  <div>loading</div>
+  // if(rowloading) return  <Loading />;
 
 
   return (
