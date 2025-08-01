@@ -1,5 +1,5 @@
 
- export interface Org {
+ export interface org {
    login:string; 
     url: string;
     repos_url: string;
@@ -21,11 +21,11 @@
     updated_at: string;
     type: string;
 }
-export interface Organisations {
+export interface getorgs{
     login: string;
     url: string;
     avatar_url: string;
-    description: string | null;
+    description: string;
 }
 
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Organisations, Org } from "./types";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { url } from "inspector";
 const Base_Url="https://api.github.com";
 // Use process.env.GITHUB_API_TOKEN directly in your code
 
@@ -65,4 +66,8 @@ export function Popularity(followers:number){
    return "moderate";
 
 
+}
+export async function  getURL({url}:{url:string}){
+    const response=await axios.get(url)
+    return response.data
 }

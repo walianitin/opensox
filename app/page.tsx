@@ -1,93 +1,33 @@
 "use client";
 
-import { useState, useEffect, use, JSX } from "react";
-import { getOrgData, getOrganisation } from "./utils/httpsclient";
-import { Organisations, Org, repos_url } from "./utils/types";
-import { motion } from "framer-motion";
+import {  Org, repos_url } from "./utils/types";
+import { motion, usePageInView } from "framer-motion";
 import Image from "next/image";
-import { BadgeCheck } from "lucide-react";
 
 import axios from "axios";
+import Orgscard from "./components/OrgCard";
 
 
-
-const columns = [
-  { key: "name", label: "Name", width: "w-1/5" },
-  { key: "description", label: "Description", width: "w-1/4" },
-  { key: "public_repos", label: "Public Repos", width: "w-1/8" },
-  { key: "followers", label: "Followers", width: "w-1/8" },
-  { key: "language", label: "Languages", width: "w-1/8" },
-  { key: "has_projects", label: "Has Projects", width: "w-1/8" },
-  { key: "location", label: "Location", width: "w-1/8" },
-];
 
 
 export default function Home() {
-  const [Organisations, setOrganisations] = useState<Organisations[]>([]);
-  const [loading ,setloading]=useState<boolean>(true);
-  const [err,seterrors]=useState<string>("");
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setloading(true);
-        const orgs = await getOrganisation();
-        setOrganisations(orgs);
-      } catch (err) {
-        seterrors("Failed to load organizations");
-        console.error(err);
-      } finally {
-        setloading(false);
-      }
-    };
-
-    fetchData();
-     }, []);
-  
-  
-  
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const itemsPerPage = 10; // Number of items per page
-  const totalPages = Math.ceil(Organisations.length / itemsPerPage);
-  const startindex: number = (currentPage - 1) * itemsPerPage;
-  const endIndex=startindex + itemsPerPage;
-  const currentItems = Organisations.slice(startindex, endIndex);
-  console.log("currentItems", currentItems);
-  
-    if(loading) return <Loading />; 
-    if(err) return <ErrorDisplay message={err} />;
+  // // const [Organisations, setOrganisations] = useState<Organisations[]>([]);
+  // const [loading ,setloading]=useState<boolean>(true);
+  // const [err,seterrors]=useState<string>("");
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  // const itemsPerPage = 10; // Number of items per page
+  // const totalPages = Math.ceil(Organisations.length / itemsPerPage);
+  // const startindex: number = (currentPage - 1) * itemsPerPage;
+  // const endIndex=startindex + itemsPerPage;
+  // const currentItems = Organisations.slice(startindex, endIndex);
 
   return (
-    <div className=" w-full h-screen overflow-hidden flex flex-row gap-3 p-2 scrollbar-hidden ">
-      <div className="w-1/3 bg-amber-50">
-      
-      </div>
-      <div className="w-1/3 bg-blue-50">
-
-      </div>
-      <div className=" cursor-w-resize bg-amber-300">
-
-    <table className=" w-full h-screen border-collapse">
-     <TableHeader columns={columns} />
-      <tbody>
-{currentItems.map((orgs, index) => (
-  <OrgsRow
-  key={index.toString()}
-  orgs={orgs}
-  columns={columns}
-  />
-))}
-     </tbody>
-   <Tablefooter
-      currentpage={currentPage}
-      setCurrentPage={setCurrentPage  }
-      totalPages={totalPages}>
-   </Tablefooter>
-    </table>
-        </div>
-      </div>
-  );
+    <>
+        <div className=" w-full h-screens">
+          <Orgscard/>
+          </div>
+    </>
+  )
 }
 
 function Tablefooter({
@@ -168,82 +108,82 @@ function TableHeader({ columns }: { columns: { key: string; label: string; width
   );
 }
 
-function OrgsRow({orgs,columns }:{orgs:Organisations, columns:{ key: string; label: string; width: string }[]}) {
+// function OrgsRow({orgs,columns }:{orgs:Organisations, columns:{ key: string; label: string; width: string }[]}) {
 
 
-  const [OrgData, setOrgData] = useState<Org| null>(null);
-  // const router = useRouter();
-  const [repos_url, setrepo_url_data]=useState<repos_url[]>([]);
-  const [rowloading, setRowLoading] = useState<boolean>(true);
+//   const [OrgData, setOrgData] = useState<Org| null>(null);
+//   // const router = useRouter();
+//   const [repos_url, setrepo_url_data]=useState<repos_url[]>([]);
+//   const [rowloading, setRowLoading] = useState<boolean>(true);
 
 
-  useEffect(() => {
-    setRowLoading(true);
-try{ 
-      getOrgData(orgs.url).then((data) => {
-  // Check if data is an Org by checking for repos_url property
-  if (data && typeof data === "object" && "repos_url" in data) {
-    setOrgData(data as Org);
-    if ((data as Org).repos_url) {
-      inside_repos((data as Org).repos_url).then((value) => setrepo_url_data(value));
-    }
-  } else {
-    setOrgData(null);
-  }
-});
- }
-     catch(err) {
-      console.error("Error fetching organization data:", err);
-    } finally { 
-      setRowLoading(false);
-    }
-  },[orgs.url]);
+//   useEffect(() => {
+//     setRowLoading(true);
+// try{ 
+//       getOrgData(orgs.url).then((data) => {
+//   // Check if data is an Org by checking for repos_url property
+//   if (data && typeof data === "object" && "repos_url" in data) {
+//     setOrgData(data as Org);
+//     if ((data as Org).repos_url) {
+//       inside_repos((data as Org).repos_url).then((value) => setrepo_url_data(value));
+//     }
+//   } else {
+//     setOrgData(null);
+//   }
+// });
+//  }
+//      catch(err) {
+//       console.error("Error fetching organization data:", err);
+//     } finally { 
+//       setRowLoading(false);
+//     }
+//   },[orgs.url]);
 
-  // if(rowloading) return  <Loading />;
-
-
-  return (
-    <motion.tr
-      whileHover={{ backgroundColor: "rgba(255,255,255,0.05)" }}
-      onClick={() => {
-        if (OrgData?.html_url) {
-          window.open(OrgData.html_url, "_blank");
-        }
-      }}
-      style={{ cursor: OrgData?.html_url ? "pointer" : "default" }}
-    >
-      <td className="border-b border-neutral-800 p-3 text-lg font-medium">
-        <div className="flex items-center gap-2">
-          <Image src={orgs.avatar_url} alt="avatar" width={40} height={40} className="rounded-full" />
-          <span>{orgs.login.toUpperCase()}</span>
-          {OrgData?.is_verified && <BadgeCheck className="text-green-500 w-4 h-4" />}
-        </div>
-      </td>
-
-      <td className="border-b border-neutral-800 text-sm">
-        {orgs.description || "-"}
-      </td>
-
-      <td className="border-b border-neutral-800">
-        {OrgData ? OrgData.public_repos : "loading..."}
-      </td>
+//   // if(rowloading) return  <Loading />;
 
 
-      <td className="border-b border-neutral-800">
-        {OrgData ? OrgData.followers : "loading..."}
-      </td>
-      <td>
-          {repos_url[0]?.language|| "-"}
-      </td>
-      <td className="border-b border-neutral-800" >
-        {OrgData?.has_organization_projects || OrgData?.has_repository_projects ? "true":"false"}
-      </td>
-      <td className="border-b border-neutral-800"> 
-        {OrgData?.location}
-      </td>
-    </motion.tr>
-  );
-}
+//   return (
+//     <motion.tr
+//       whileHover={{ backgroundColor: "rgba(255,255,255,0.05)" }}
+//       onClick={() => {
+//         if (OrgData?.html_url) {
+//           window.open(OrgData.html_url, "_blank");
+//         }
+//       }}
+//       style={{ cursor: OrgData?.html_url ? "pointer" : "default" }}
+//     >
+//       <td className="border-b border-neutral-800 p-3 text-lg font-medium">
+//         <div className="flex items-center gap-2">
+//           <Image src={orgs.avatar_url} alt="avatar" width={40} height={40} className="rounded-full" />
+//           <span>{orgs.login.toUpperCase()}</span>
+//           {OrgData?.is_verified && <BadgeCheck className="text-green-500 w-4 h-4" />}
+//         </div>
+//       </td>
+
+//       <td className="border-b border-neutral-800 text-sm">
+//         {orgs.description || "-"}
+//       </td>
+
+//       <td className="border-b border-neutral-800">
+//         {OrgData ? OrgData.public_repos : "loading..."}
+//       </td>
+
+
+//       <td className="border-b border-neutral-800">
+//         {OrgData ? OrgData.followers : "loading..."}
+//       </td>
+//       <td>
+//           {repos_url[0]?.language|| "-"}
+//       </td>
+//       <td className="border-b border-neutral-800" >
+//         {OrgData?.has_organization_projects || OrgData?.has_repository_projects ? "true":"false"}
+//       </td>
+//       <td className="border-b border-neutral-800"> 
+//         {OrgData?.location}
+//       </td>
+//     </motion.tr>
+//   );
+// }
 
 function getPopularityLabel(followers: number) {
   if (followers >= 0 && followers <= 50) return "very low";
