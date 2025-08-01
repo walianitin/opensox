@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import { Organisations, Org } from "./types";
+import { getorgs, org } from "./types";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { url } from "inspector";
@@ -8,7 +8,7 @@ const Base_Url="https://api.github.com";
 // Use process.env.GITHUB_API_TOKEN directly in your code
 
 
-export async function  getOrganisation():Promise<Organisations[]>{
+export async function  getOrganisation():Promise<getorgs[]>{
     try{
 
         const response =await axios.get(`${Base_Url}/organizations?per_page=1000`,
@@ -29,23 +29,6 @@ export async function  getOrganisation():Promise<Organisations[]>{
 
 }
 
-export async function getOrgData(url:string) {
-    try{
-
-        const response= await axios.get(`${url}`,{
-            headers:{
-                Authorization: "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"
-            }
-        })
-        const data:Org=response.data;
-        return data;
-    }catch(err){
-        return NextResponse.json({
-            message:err
-        })
-    }
-    
-}
 
 export async function  getIssues(url:string) {
     const repos_url= await axios.get(`${url}`, {

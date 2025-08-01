@@ -4,10 +4,9 @@ import type { getorgs,org } from "../utils/types";
 import { getorg, Getorgs } from "../utils/Octokit";
 import Filter_data from "../utils/hooks/Filter_data";
 
+import { getURL } from "../utils/httpsclient";
 
-import { getOrgData } from "../utils/httpsclient";
-import { url } from "node:inspector/promises";
-
+import Social from "../components/SocialCard"
 export default function Orgscard(){
 
     const [getorgs,setorgs]=useState<getorgs[]>([]);
@@ -43,8 +42,10 @@ function SingleOrgsCard({org,key}:{org:getorgs, key:number}){
     
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getOrgData(data.url);
+            console.log(data.url)
+            const response = await getURL({url:data.url});
             seturl_data(response);
+           
         };
         fetchData();
     }, [data.url]);
@@ -62,6 +63,14 @@ function SingleOrgsCard({org,key}:{org:getorgs, key:number}){
         <h1 className="font-bold text-lg mb-1 text-black">{org.login}</h1>
         <p className=" text-xs font-light "> { url_data?.location}</p>
         <p className="font-light text-xs text-center text-black">{org.description}</p>
+        
+        {/* Social links */}
+        <Social 
+            email={url_data?.email || ""} 
+            twitter={url_data?.twitter_username || ""} 
+            blog={url_data?.blog || ""} 
+            is_verified={url_data?.is_verified ? "true" : ""} 
+        />
     
     </div>
     </>
