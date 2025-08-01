@@ -25,7 +25,7 @@ import { MdOutlineVerified } from "react-icons/md";
     };
 
     return <>
-        <div className="flex gap-2 items-center justify-center mt-2">
+        <div className="flex  gap-2 items-center justify-center mt-2">
             {email && (
                 <span 
                     className="cursor-pointer text-blue-500 hover:text-blue-700 transition-colors"
@@ -57,13 +57,9 @@ import { MdOutlineVerified } from "react-icons/md";
             )}
             
             {is_verified && (
-                <span 
-                    className="text-blue-500"
-                    title="Verified"
-                >
-                    <MdOutlineVerified   color="blue" size={16} />
-                </span>
-            )}
+                <span>
+                    <MdOutlineVerified size={16} />
+                </span>  )}
         </div>
     </>
 
