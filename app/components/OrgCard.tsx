@@ -85,7 +85,7 @@ function SingleOrgsCard({org}:{org:getorgs, idx:number}){
     return <>
    
     <div className="h-auto max-h-96 bg-white shadow-lg border border-gray-200 rounded-xl text-black flex flex-col items-center m-2 p-4 transition-transform duration-200 hover:scale-105 hover:shadow-2xl cursor-pointer" onClick={handle_git_travel}  >
-        <span className=" " >
+        <span  >
         <Image
             src={org.avatar_url}
             alt="logo"
