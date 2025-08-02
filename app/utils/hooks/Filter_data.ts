@@ -4,6 +4,7 @@ import { getorgs } from "../types";
 export default function Filter_data(getorgs: getorgs[]){
     
     const filtered_data: getorgs[] = [];
+    
     for (const org of getorgs) {
         if (org.description==null || org.description=="") {
             //filtered_data.push(org);

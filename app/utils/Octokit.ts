@@ -4,7 +4,7 @@
 import  {Octokit} from "octokit"
 
 const octokit = new Octokit({
-    auth:"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"
+    auth:"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"
 })
 
 export const Getorgs=async ()=>{

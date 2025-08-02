@@ -5,9 +5,9 @@ import { Getorgs } from "../utils/Octokit";
 import Filter_data from "../utils/hooks/Filter_data";
 import Image from "next/image";
 import { getURL } from "../utils/httpsclient";
-
 import Social from "../components/SocialCard"
 import { AppSidebar } from "./Sidebar";
+
 export default function Orgscard(){
 
     const [getorgs,setorgs]=useState<getorgs[]>([])
@@ -16,7 +16,9 @@ export default function Orgscard(){
  
         useEffect( ()=>{
             const fetch=async ()=>{
-                const response=await Getorgs();
+                // const response=await axios.get("api/organizations");
+                //  console.log(response.data)
+                 const response=await Getorgs();
                 const data: getorgs[] = JSON.parse(JSON.stringify(response));
                 const filter=Filter_data(data)
                 setorgs(filter)
@@ -46,17 +48,14 @@ export default function Orgscard(){
 
     return (<>
             <div className=" w-full  flex flex-row m-auto p-auto">
-             <AppSidebar/>
-
+            <div className=" min-w-1/5  border-0  shadow-lg  "> <AppSidebar/></div>
             <div className=" flex flex-col gap-3 pt-4 ">
-
-
-            <span className="  flex  justify-center gap-2 h-15 ">
-                <input type=" text " placeholder=" Search .." className="max-w-2xl min-w-4xl text-center rounded-xl pl-10 pr-10  border-none  shadow-md border-transparent" onChange={HandleOnChange} />
+            <span className="  flex  justify-center gap-2   ">
+                <input type=" text " placeholder=" Search .." className="max-w-2xl min-w-4xl text-center rounded-xl pl-10 pr-10  border-none h-10  shadow-md border-transparent " onChange={HandleOnChange} />
             </span>
-            <div className="grid grid-cols-4 gap-3 m-auto   ">
+            <div className="grid grid-cols-4 gap-3 bg-background min-h-screen shadow-xs pl-0">
                     {filteredOrgs.map((org, idx) => (
-                        <SingleOrgsCard key={idx} org={org as getorgs} />
+                        <SingleOrgsCard  key={idx} idx={idx} org={org as getorgs} />
                     ))}
             </div>
             </div>
@@ -65,7 +64,7 @@ export default function Orgscard(){
     </>)
 }
 
-function SingleOrgsCard({org,key}:{org:getorgs, key:number}){
+function SingleOrgsCard({org}:{org:getorgs, idx:number}){
     const [data]=useState(org);
     const [url_data,seturl_data]=useState<org>()
     
@@ -81,7 +80,7 @@ function SingleOrgsCard({org,key}:{org:getorgs, key:number}){
    
     return <>
    
-    <div className="h-auto max-h-96 bg-white shadow-lg border border-gray-200 rounded-xl text-black flex flex-col items-center m-2 p-4 transition-transform duration-200 hover:scale-105 hover:shadow-2xl" key={key}>
+    <div className="h-auto max-h-96 bg-white shadow-lg border border-gray-200 rounded-xl text-black flex flex-col items-center m-2 p-4 transition-transform duration-200 hover:scale-105 hover:shadow-2xl" >
         <span className=" ">
         <Image
             src={org.avatar_url}

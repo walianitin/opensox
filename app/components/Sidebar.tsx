@@ -14,7 +14,7 @@ import { Home, Filter, Users, Star, Settings, Info } from "lucide-react"
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar className=" ">
       <SidebarHeader>
         <div className="p-4 text-center">
           <h1 className="text-xl font-bold text-black">OpenSOX</h1>
