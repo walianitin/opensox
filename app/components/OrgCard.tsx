@@ -16,8 +16,7 @@ export default function Orgscard(){
  
         useEffect( ()=>{
             const fetch=async ()=>{
-                // const response=await axios.get("api/organizations");
-                //  console.log(response.data)
+           
                  const response=await Getorgs();
                 const data: getorgs[] = JSON.parse(JSON.stringify(response));
                 const filter=Filter_data(data)
@@ -78,10 +77,15 @@ function SingleOrgsCard({org}:{org:getorgs, idx:number}){
         fetchData();
     }, [data.url]);
    
+    const handle_git_travel=(e:React.MouseEvent)=>{
+        if(url_data?.html_url){
+            window.open(url_data.html_url);
+        }
+    }
     return <>
    
-    <div className="h-auto max-h-96 bg-white shadow-lg border border-gray-200 rounded-xl text-black flex flex-col items-center m-2 p-4 transition-transform duration-200 hover:scale-105 hover:shadow-2xl" >
-        <span className=" ">
+    <div className="h-auto max-h-96 bg-white shadow-lg border border-gray-200 rounded-xl text-black flex flex-col items-center m-2 p-4 transition-transform duration-200 hover:scale-105 hover:shadow-2xl cursor-pointer" onClick={handle_git_travel}  >
+        <span className=" " >
         <Image
             src={org.avatar_url}
             alt="logo"
