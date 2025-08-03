@@ -67,7 +67,7 @@ export default function Social({
 
         {is_verified && (
           <span>
-            <MdOutlineVerified size={16} />
+            <MdOutlineVerified className="bg-verified" style={{color:'blue',}}  size={16} />
           </span>
         )}
       </div>

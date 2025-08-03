@@ -84,7 +84,7 @@ function SingleOrgsCard({ org }: { org: getorgs; idx: number }) {
     fetchData();
   }, [data.url]);
 
-  const handle_git_travel = (e: React.MouseEvent) => {
+  const handle_git_travel = () => {
     if (url_data?.html_url) {
       window.open(url_data.html_url);
     }

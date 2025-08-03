@@ -9,6 +9,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import {
   Home,
@@ -19,8 +22,11 @@ import {
   Settings,
   Info,
 } from "lucide-react";
+import { useState } from "react";
 
 export function AppSidebar() {
+  const [expand, setexpand]=useState<string[]>([]);
+  
   return (
     <Sidebar className="flex justify-center">
       <SidebarHeader>
@@ -88,17 +94,50 @@ export function AppSidebar() {
         {/* Categories */}
         <SidebarGroup>
           <SidebarGroupLabel>Categories</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <span>Technology</span>
+          <SidebarGroupContent >
+            <SidebarMenu >
+              <SidebarMenuItem className="">
+                <SidebarMenuButton onClick={() => {
+                  if (expand.includes("technology")) {
+                    setexpand(expand.filter(item => item !== "technology"));
+                  } else {
+                    setexpand([...expand, "technology"]);
+                  }
+                }}>
+                 Technology
                 </SidebarMenuButton>
+                {expand.includes("technology") && (
+                  <SidebarMenuSub>
+                    <SidebarMenuSubItem>
+                      <SidebarMenuSubButton>C++</SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <SidebarMenuSubButton>JavaScript</SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <SidebarMenuSubButton>Python</SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                    <SidebarMenuSubItem>
+                      <SidebarMenuSubButton>React</SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  </SidebarMenuSub>
+                )}
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton>
+                <SidebarMenuButton onClick={()=>{
+                  if(expand.includes("opensource")) { setexpand(expand.filter((item)=> item!=="opensource"))}
+                    else setexpand([...expand,"opensource"])
+                }}>
                   <span>Open Source</span>
                 </SidebarMenuButton>
+             {expand.includes("opensource") &&(  <SidebarMenuSub>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton>non core </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                      <SidebarMenuSubItem>
+                    <SidebarMenuSubButton>core </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                </SidebarMenuSub>)}
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton>

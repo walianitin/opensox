@@ -1,10 +1,11 @@
 // Octokit.js
 // https://github.com/octokit/core.js#readme
 
+
 import  {Octokit} from "octokit"
 
 const octokit = new Octokit({
-    auth:"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"
+    auth:"ADD YOU GIT HUB TOKEN"
 })
 
 export const Getorgs=async ()=>{
@@ -13,8 +14,9 @@ export const Getorgs=async ()=>{
     headers: {
     'X-GitHub-Api-Version': '2022-11-28'
   }
-
+  
 })
+console.log(response)
 //
 return response.data
 }
